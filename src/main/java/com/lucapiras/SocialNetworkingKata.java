@@ -1,6 +1,8 @@
 package com.lucapiras;
 
-import com.lucapiras.service.WelcomeService;
+import com.lucapiras.dispatcher.IDispatcher;
+import com.lucapiras.exception.ExitException;
+import com.lucapiras.exception.UnknownRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,7 +28,7 @@ public class SocialNetworkingKata implements CommandLineRunner {
     private ApplicationContext ctx;
     
     @Autowired
-    private WelcomeService helloService;
+    private IDispatcher dispatcher;
 
     public static void main(String[] args) throws Exception {        
         SpringApplication.run(SocialNetworkingKata.class, args);
@@ -44,20 +46,33 @@ public class SocialNetworkingKata implements CommandLineRunner {
             }
         }
         
-        if (args.length > 0 ) {
-            System.out.println(helloService.getMessage(args[0].toString()));
-        }else{
-            System.out.println(helloService.getMessage());
-        }
+        /*if (args.length > 0 ) {
+            dispatcher.dispatch(args[0].toString());
+        }*/
+        
+        this.printWelcome();
         
         Scanner scanner = new Scanner(System.in);
         while(true) {
-            String next = scanner.nextLine();
-            if (0 != next.compareToIgnoreCase("exit")) {
-                System.out.println(helloService.getMessage(next));
-            } else {
+            try {
+                dispatcher.dispatch(scanner.nextLine());
+            } catch(UnknownRequestException ex) {
+                System.out.println("\nUnknown command, please write again.\n");
+            } catch(ExitException ex) {
                 exit(0);
-            }            
+            }   
         }
+    }
+
+    protected void printWelcome() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nWelcome to Social Networking Kata\n\n");
+        sb.append("Commands allowed: \n\n");
+        sb.append("- posting: <user name> -> <message>\n");
+        sb.append("- reading: <user name>\n");
+        sb.append("- following: <user name> follows <another user>\n");
+        sb.append("- wall: <user name> wall\n");
+        sb.append("- exit\n");
+        System.out.println(sb);
     }
 }
