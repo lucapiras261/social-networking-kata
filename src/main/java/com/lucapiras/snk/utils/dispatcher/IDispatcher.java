@@ -1,4 +1,4 @@
-package com.lucapiras.snk.dispatcher;
+package com.lucapiras.snk.utils.dispatcher;
 
 import com.lucapiras.snk.exception.ExitException;
 import com.lucapiras.snk.exception.UnknownRequestException;
