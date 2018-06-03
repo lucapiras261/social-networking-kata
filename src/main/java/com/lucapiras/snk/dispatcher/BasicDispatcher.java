@@ -1,10 +1,8 @@
-package com.lucapiras.dispatcher;
+package com.lucapiras.snk.dispatcher;
 
-import com.lucapiras.exception.ExitException;
-import com.lucapiras.exception.UnknownRequestException;
-import com.lucapiras.service.WelcomeService;
+import com.lucapiras.snk.exception.ExitException;
+import com.lucapiras.snk.exception.UnknownRequestException;
 import java.util.StringTokenizer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**

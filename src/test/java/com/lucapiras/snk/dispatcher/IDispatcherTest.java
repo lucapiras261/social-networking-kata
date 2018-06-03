@@ -1,7 +1,9 @@
-package com.lucapiras.dispatcher;
+package com.lucapiras.snk.dispatcher;
 
-import com.lucapiras.exception.ExitException;
-import com.lucapiras.exception.UnknownRequestException;
+import com.lucapiras.snk.dispatcher.BasicDispatcher;
+import com.lucapiras.snk.dispatcher.IDispatcher;
+import com.lucapiras.snk.exception.ExitException;
+import com.lucapiras.snk.exception.UnknownRequestException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;

@@ -1,4 +1,4 @@
-package com.lucapiras.exception;
+package com.lucapiras.snk.exception;
 
 /**
  * Exception thrown when it is needed to conclude an operation or to exit from

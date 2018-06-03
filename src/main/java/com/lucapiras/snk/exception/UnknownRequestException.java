@@ -1,4 +1,4 @@
-package com.lucapiras.exception;
+package com.lucapiras.snk.exception;
 
 /**
  *

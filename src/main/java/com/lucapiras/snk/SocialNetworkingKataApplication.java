@@ -1,8 +1,8 @@
-package com.lucapiras;
+package com.lucapiras.snk;
 
-import com.lucapiras.dispatcher.IDispatcher;
-import com.lucapiras.exception.ExitException;
-import com.lucapiras.exception.UnknownRequestException;
+import com.lucapiras.snk.dispatcher.IDispatcher;
+import com.lucapiras.snk.exception.ExitException;
+import com.lucapiras.snk.exception.UnknownRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,7 @@ import org.springframework.context.ApplicationContext;
  * @author Luca Piras
  */
 @SpringBootApplication
-public class SocialNetworkingKata implements CommandLineRunner {
+public class SocialNetworkingKataApplication implements CommandLineRunner {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -31,7 +31,7 @@ public class SocialNetworkingKata implements CommandLineRunner {
     private IDispatcher dispatcher;
 
     public static void main(String[] args) throws Exception {        
-        SpringApplication.run(SocialNetworkingKata.class, args);
+        SpringApplication.run(SocialNetworkingKataApplication.class, args);
     }
 
     @Override
