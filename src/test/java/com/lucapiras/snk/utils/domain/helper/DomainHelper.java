@@ -1,5 +1,7 @@
 package com.lucapiras.snk.utils.domain.helper;
 
+import com.lucapiras.snk.following.Following;
+import com.lucapiras.snk.following.FollowingId;
 import com.lucapiras.snk.post.Post;
 import com.lucapiras.snk.post.PostId;
 import com.lucapiras.snk.user.User;
@@ -45,6 +47,30 @@ public class DomainHelper implements IDomainHelper {
     @Override
     public Post createFirstPostAlice() {
         return new Post(new PostId(this.createAlice()), "I love the weather today");
+    }
+
+    
+    @Override
+    public Following createCharlieFollowsAlice() {
+        
+        FollowingId followingId = new FollowingId(this.createCharlie(), this.createAlice());
+        
+        return new Following(followingId);
+    }
+    
+    @Override
+    public Following createCharlieFollowsBob() {
+        
+        FollowingId followingId = new FollowingId(this.createCharlie(), this.createBob());
+        
+        return new Following(followingId);
+    }
+
+    @Override
+    public Following createAliceFollowsBob() {
+        FollowingId followingId = new FollowingId(this.createAlice(), this.createBob());
+        
+        return new Following(followingId);
     }
     
 }

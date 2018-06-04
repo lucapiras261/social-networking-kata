@@ -1,5 +1,6 @@
 package com.lucapiras.snk.utils.domain.helper;
 
+import com.lucapiras.snk.following.Following;
 import com.lucapiras.snk.post.Post;
 import com.lucapiras.snk.user.User;
 
@@ -19,4 +20,8 @@ public interface IDomainHelper {
     public Post createSecondPostBob();
     
     public Post createFirstPostAlice();
+    
+    public Following createCharlieFollowsAlice();
+    public Following createCharlieFollowsBob();
+    public Following createAliceFollowsBob();
 }

@@ -2,6 +2,7 @@ package com.lucapiras.snk.utils.dispatcher;
 
 import com.lucapiras.snk.exception.ExitException;
 import com.lucapiras.snk.exception.UnknownRequestException;
+import com.lucapiras.snk.following.IFollowingController;
 import com.lucapiras.snk.model.BasicModel;
 import com.lucapiras.snk.post.IPostController;
 import com.lucapiras.snk.user.IUserController;
@@ -23,6 +24,9 @@ public class BasicDispatcher implements IDispatcher {
     
     @Autowired
     protected IPostController postController;
+    
+    @Autowired
+    protected IFollowingController followingController;
     
     @Autowired
     protected IViewResolver viewResolver;
@@ -65,7 +69,9 @@ public class BasicDispatcher implements IDispatcher {
                 } else if (0 == secondToken.compareToIgnoreCase("follows") && 
                            st.hasMoreElements()) {//FOLLOWS CASE
 
-                    System.out.println("The follow function will be implemented soon.");
+                    returnView = followingController.save(firstToken, 
+                                                          st.nextToken(),
+                                                          model);
 
                 } else {
 

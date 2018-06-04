@@ -50,15 +50,12 @@ public class UserRepositoryTest {
             count++;
         }
         
-        if (users.size() != count) {
-            Assert.fail("Expected " + users.size() + 
-                        ", while counted " + count);
-        }
+        Assert.assertEquals("It did not update the post with the second content!",
+                            users.size(), count);
     }
     
     @Test
     public void testPrimaryKey() {
-        System.out.println("UserRepositoryTest testPrimaryKey");
         
         List<User> users = new ArrayList();        
         
@@ -79,10 +76,7 @@ public class UserRepositoryTest {
             count++;
         }
         
-        if ((users.size() - 1) != count) {
-            Assert.fail("Primary key constraint not working: " +
-                        "Expected " + users.size() + 
-                        ", while counted " + count);
-        }
+        Assert.assertEquals("Primary key constraint not working!",
+                            users.size() - 1, count);
     }
 }

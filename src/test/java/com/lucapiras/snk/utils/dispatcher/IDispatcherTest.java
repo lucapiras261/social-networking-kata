@@ -1,13 +1,15 @@
-package com.lucapiras.snk.dispatcher;
+package com.lucapiras.snk.utils.dispatcher;
 
 import com.lucapiras.snk.SocialNetworkingKataTestApplication;
-import com.lucapiras.snk.utils.dispatcher.IDispatcher;
 import com.lucapiras.snk.exception.ExitException;
 import com.lucapiras.snk.exception.UnknownRequestException;
+import com.lucapiras.snk.following.Following;
+import com.lucapiras.snk.following.FollowingRepository;
 import com.lucapiras.snk.post.Post;
-import com.lucapiras.snk.post.PostId;
 import com.lucapiras.snk.post.PostRepository;
 import com.lucapiras.snk.user.User;
+import com.lucapiras.snk.utils.domain.helper.DomainHelperFactory;
+import com.lucapiras.snk.utils.domain.helper.IDomainHelper;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
@@ -34,14 +36,19 @@ public class IDispatcherTest {
     @MockBean
     protected PostRepository postRepository;
     
+    @MockBean
+    protected FollowingRepository followingRepository;
+    
     @Before
     public void setUp() {
         
-        User charlie = new User("charlie");
+        IDomainHelper repoHelper = DomainHelperFactory.getRepositoryHelper();
         
-        Post post = new Post(new PostId(charlie), "I am fine");
+        Post post = repoHelper.createFirstPostCharlie();
+        Mockito.when(postRepository.save(post)).thenReturn(post);        
         
-        Mockito.when(postRepository.save(post)).thenReturn(post);
+        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        Mockito.when(followingRepository.save(charlieFollowsBob)).thenReturn(charlieFollowsBob);
     }
 
     /**
@@ -49,7 +56,7 @@ public class IDispatcherTest {
      */
     @Test(expected = ExitException.class)
     public void testDispatchExitException() throws Exception {
-        System.out.println("dispatch testDispatchExitException");
+        
         String request = "exit";
         dispatcher.dispatch(request);
     }
@@ -59,7 +66,6 @@ public class IDispatcherTest {
      */
     @Test
     public void testDispatchUnknownRequestException() throws Exception {
-        System.out.println("dispatch testDispatchUnknownRequestException");
                 
         List<String> requests = new ArrayList();        
         
@@ -92,10 +98,8 @@ public class IDispatcherTest {
             }
         }
         
-        if (exCount != requests.size()) {
-            Assert.fail("Expected " + requests.size() + 
-                        " exceptions, while counted " + exCount);
-        }
+        Assert.assertEquals("Primary key constraint not working!",
+                            requests.size(), exCount);
     }
     
     /**
@@ -103,7 +107,6 @@ public class IDispatcherTest {
      */
     @Test
     public void testDispatchSuccess() throws Exception {
-        System.out.println("dispatch testDispatchSuccess");
                 
         List<String> requests = new ArrayList();        
         requests.add("charlie -> I am fine");

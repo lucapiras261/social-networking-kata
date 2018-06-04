@@ -18,7 +18,6 @@ public class TimeAgoFormatterTest {
      */
     @Test
     public void testFormatTimeAgo() throws ParseException {
-        System.out.println("formatTimeAgo");
         
         TimeAgoFormatter instance = new TimeAgoFormatter();
         

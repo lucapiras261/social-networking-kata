@@ -14,7 +14,6 @@ public class AdvancedStringTokenizerTest {
      */
     @Test
     public void testExtractRemainingText() {
-        System.out.println("extractRemainingText");
         
         String delim = " ";
                 

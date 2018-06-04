@@ -47,7 +47,6 @@ public class PostRepositoryTest {
      */
     @Test
     public void testSaveExternalReferenceViolation() {
-        System.out.println("PostRepositoryTest testSaveExternalReferenceViolation");
         
         Post firstPostBob = repoHelper.createFirstPostBob();
         
@@ -60,9 +59,9 @@ public class PostRepositoryTest {
                 count++;
             }
             
-            if (count > 0) {
-                Assert.fail("It saved a post for a user that does not exist!");
-            }
+            Assert.assertEquals("It saved a post for a user that does not exist!",
+                                1, count);
+            
         } catch(Exception ex) {//it is fine also if it throwned an exception;
             //this is because sometimes it doesn't flush the save soon and do not
             //throw the expected exception and, therefore, if it thrown it with
@@ -77,7 +76,6 @@ public class PostRepositoryTest {
      */
     @Test
     public void testSave() {
-        System.out.println("PostRepositoryTest testSave");
         
         User bob = repoHelper.createBob();
         Post firstPostBob = repoHelper.createFirstPostBob();
@@ -91,9 +89,9 @@ public class PostRepositoryTest {
             count++;
         }
 
-        if (count != 1) {
-            Assert.fail("It did not save a post for a user that exist!");
-        }
+        Assert.assertEquals("It did not save a post for a user that exist!",
+                                1, count);
+        
     }
     
     /**
@@ -103,7 +101,6 @@ public class PostRepositoryTest {
      */
     @Test
     public void testUpdate() {
-        System.out.println("PostRepositoryTest testUpdate");
         
         User bob = repoHelper.createBob();
         
@@ -120,9 +117,8 @@ public class PostRepositoryTest {
             count++;
         }
 
-        if (count == 2) {
-            Assert.fail("It did not update the post with the second content!");
-        }
+        Assert.assertEquals("It did not update the post with the second content!",
+                            1, count);
     }
     
     /**
@@ -132,7 +128,6 @@ public class PostRepositoryTest {
      */
     @Test
     public void testMultipleSaves() throws InterruptedException {
-        System.out.println("PostRepositoryTest testMultipleSaves");
         
         User bob = repoHelper.createBob();
         
@@ -150,10 +145,8 @@ public class PostRepositoryTest {
             count++;
         }
         
-        if (count < 2) {
-            Assert.fail("It did not save 2 posts that are different! "
-                    + "Expected 2, while them were: " + count);
-        }
+        Assert.assertEquals("It did not save 2 posts that are different! ",
+                            2, count);
     }
     
     /**
@@ -161,7 +154,6 @@ public class PostRepositoryTest {
      */
     @Test
     public void testFindByPostIdPostOwnerOrderByPostIdPostTimestampAsc() throws InterruptedException {
-        System.out.println("findByPostIdPostOwnerOrderByPostIdPostTimestampAsc");
         
         User bob = repoHelper.createBob();
         
