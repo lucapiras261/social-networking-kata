@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
  * @author Luca Piras
  */
 public class AdvancedStringTokenizer extends StringTokenizer {
-
+    
     public AdvancedStringTokenizer(String str) {
         super(str);
     }
