@@ -9,4 +9,6 @@ import org.springframework.ui.Model;
 public interface IPostController {
     
     public String save(String username, String content, Model model);
+    
+    public String readTimeline(String username, Model model);
 }

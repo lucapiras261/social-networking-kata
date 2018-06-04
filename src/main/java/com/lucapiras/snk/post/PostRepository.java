@@ -12,4 +12,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface PostRepository extends CrudRepository<Post, PostId> {
     
     List<Post> findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(User postOwner);
+    
 }

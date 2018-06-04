@@ -1,6 +1,7 @@
 package com.lucapiras.snk.model;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.ui.Model;
 
@@ -10,9 +11,18 @@ import org.springframework.ui.Model;
  */
 public class BasicModel implements Model {
 
+    protected HashMap<String, Object> map;
+
+    public BasicModel() {
+        this.map = new HashMap<>();
+    }
+    
+    
     @Override
     public Model addAttribute(String string, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.map.put(string, o);
+        
+        return this;
     }
 
     @Override
@@ -42,6 +52,6 @@ public class BasicModel implements Model {
 
     @Override
     public Map<String, Object> asMap() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.map;
     }
 }

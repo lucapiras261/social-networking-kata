@@ -1,5 +1,8 @@
 package com.lucapiras.snk.post;
 
+import com.lucapiras.snk.user.User;
+import java.util.List;
+
 /**
  *
  * @author Luca Piras
@@ -7,4 +10,7 @@ package com.lucapiras.snk.post;
 public interface IPostService {
     
     public Post save(Post post);
+    
+    public List<Post> readTimeline(User user);
+     
 }

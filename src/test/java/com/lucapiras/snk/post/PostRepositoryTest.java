@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.lucapiras.snk.utils.domain.helper.IDomainHelper;
+import java.util.List;
 import org.junit.Assert;
 
 /**
@@ -170,16 +171,26 @@ public class PostRepositoryTest {
         
         postRepository.save(repoHelper.createFirstPostCharlie());
         
-        postRepository.save(repoHelper.createFirstPostBob());
+        Post firstPostBob = repoHelper.createFirstPostBob();
         Thread.sleep(10);
-        postRepository.save(repoHelper.createSecondPostBob());
+        Post secondPostBob = repoHelper.createSecondPostBob();
+        
+        postRepository.save(firstPostBob);
+        postRepository.save(secondPostBob);
         
         postRepository.save(repoHelper.createFirstPostAlice());
         
-        Iterable<Post> results = postRepository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(bob);
+        List<Post> results = postRepository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(bob);
         int count = 0;
         for (Post result : results) {
             count++;
+            
+            //check correct ordering
+            if (count == 1) {
+                Assert.assertEquals(result.getContent(), firstPostBob.getContent());
+            } else if (count == 2) {
+                Assert.assertEquals(result.getContent(), secondPostBob.getContent());
+            }
         }
         
         Assert.assertEquals(2, count);

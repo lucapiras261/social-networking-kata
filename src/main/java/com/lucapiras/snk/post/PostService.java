@@ -1,5 +1,7 @@
 package com.lucapiras.snk.post;
 
+import com.lucapiras.snk.user.User;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,12 @@ public class PostService implements IPostService {
         }
         
         return saved;
+    }
+
+    @Override
+    public List<Post> readTimeline(User user) {
+        
+        return repository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(user);
+        
     }
 }

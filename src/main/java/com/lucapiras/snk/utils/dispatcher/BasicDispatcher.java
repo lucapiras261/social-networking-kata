@@ -5,8 +5,8 @@ import com.lucapiras.snk.exception.UnknownRequestException;
 import com.lucapiras.snk.model.BasicModel;
 import com.lucapiras.snk.post.IPostController;
 import com.lucapiras.snk.user.IUserController;
+import com.lucapiras.snk.utils.string.AdvancedStringTokenizer;
 import com.lucapiras.snk.utils.viewresolver.IViewResolver;
-import java.util.StringTokenizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -39,12 +39,13 @@ public class BasicDispatcher implements IDispatcher {
             System.out.println("The 'My Wall' function will be implemented soon.");
 
         } else {
-            StringTokenizer st = new StringTokenizer(request, " ");
+            String delim = " ";
+            AdvancedStringTokenizer st = new AdvancedStringTokenizer(request, delim);
             String firstToken = st.nextToken();
 
-            if (!st.hasMoreElements()) {//SHOW WALL OF A USER CASE
+            if (!st.hasMoreElements()) {//SHOW TIMELINE OF A USER CASE
 
-                System.out.println("The 'Show wall of a user' function will be implemented soon.");
+                returnView = postController.readTimeline(firstToken, model);
 
             } else {
                 
@@ -54,11 +55,15 @@ public class BasicDispatcher implements IDispatcher {
                     
                     returnView = userController.save(secondToken, model);
                     
-                } else if (0 == secondToken.compareToIgnoreCase("->") && st.hasMoreElements()) {//POST CASE
+                } else if (0 == secondToken.compareToIgnoreCase("->") && 
+                           st.hasMoreElements()) {//POST CASE
 
-                    returnView = postController.save(firstToken, st.toString(), model);
+                    returnView = postController.save(firstToken, 
+                                                     st.extractRemainingText(delim),
+                                                     model);
                     
-                } else if (0 == secondToken.compareToIgnoreCase("follows") && st.hasMoreElements()) {//FOLLOWS CASE
+                } else if (0 == secondToken.compareToIgnoreCase("follows") && 
+                           st.hasMoreElements()) {//FOLLOWS CASE
 
                     System.out.println("The follow function will be implemented soon.");
 
