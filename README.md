@@ -28,7 +28,9 @@ In the next, a very brief description of the other additional commands:
 - 'help' (remember to digit 'welcome', not 'help') allows the user to have a look (again) on the menu above, for reading all the available instructions
 - 'exit' does not need further explanations :D
 
-#How to install it
+**Tip: the first thing to do is to initialize the users by using the 'saving' command.**
+
+# How to install it
 
 Requirements for compiling it:
 
