@@ -30,6 +30,6 @@ public class FollowingController implements IFollowingController {
         
         service.save(following);
         
-        return "emptyView";
+        return "empty";
     }
 }

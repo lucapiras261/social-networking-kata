@@ -25,6 +25,6 @@ public class UserController implements IUserController {
                 
         //model.addAttribute("username", username);
         
-        return "emptyView";
+        return "empty";
     }
 }

@@ -7,7 +7,6 @@ import com.lucapiras.snk.following.Following;
 import com.lucapiras.snk.following.FollowingRepository;
 import com.lucapiras.snk.post.Post;
 import com.lucapiras.snk.post.PostRepository;
-import com.lucapiras.snk.user.User;
 import com.lucapiras.snk.utils.domain.helper.DomainHelperFactory;
 import com.lucapiras.snk.utils.domain.helper.IDomainHelper;
 import java.util.ArrayList;
@@ -71,9 +70,17 @@ public class IDispatcherTest {
         
         requests.add("");
         
+        requests.add("save charlie");
+        requests.add("charlie sav");
+        requests.add("charlie saved");
+        requests.add("charlie save otherText");
+        requests.add("charlie save other text");
+        
         requests.add("charlie follow");
         requests.add("charlie follow alice");
         requests.add("charlie follows");
+        requests.add("charlie follows alice otherText");
+        requests.add("charlie follows alice other text");
         
         requests.add("charlie ->");
         requests.add("charlie -");
@@ -83,23 +90,24 @@ public class IDispatcherTest {
         requests.add("charlie >  how are you?");
         requests.add("charlie * how are you?");
         
+        requests.add("charlie wal");
+        requests.add("charlie walls");
+        requests.add("charlie wall otherText");
+        requests.add("charlie wall other text");
+        
         requests.add("charlie write");
         requests.add("charlie open");
         
         requests.add("charlie write ok");
         requests.add("charlie open ok");
         
-        int exCount = 0;
         for (String request : requests) {
             try {
                 dispatcher.dispatch(request);
+                Assert.fail("Exception not thrown for: "+ request);
             } catch(UnknownRequestException ex) {
-                exCount++;
             }
         }
-        
-        Assert.assertEquals("Primary key constraint not working!",
-                            requests.size(), exCount);
     }
     
     /**
@@ -108,11 +116,12 @@ public class IDispatcherTest {
     @Test
     public void testDispatchSuccess() throws Exception {
                 
-        List<String> requests = new ArrayList();        
+        List<String> requests = new ArrayList();
+        requests.add("charlie save");
         requests.add("charlie -> I am fine");
         requests.add("charlie");
         requests.add("charlie follows alice");
-        requests.add("wall");
+        requests.add("charlie wall");
                 
         for (String request : requests) {
             dispatcher.dispatch(request);

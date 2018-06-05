@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 @Component
-public class TimelineView implements IView {
+public class PostsView implements IView {
     
     @Autowired
     ITimeAgoFormatter timeAgoFormatter;
@@ -17,18 +17,32 @@ public class TimelineView implements IView {
     @Override
     public void show(Model model) {
         
-        List<Post> timeline = (List<Post>) model.asMap().get("timeline");
+        Boolean showPostOwner = (Boolean) model.asMap().get("showPostOwner");
+        List<Post> posts = (List<Post>) model.asMap().get("posts");
         
         Date now = new Date();
-        for (Post post : timeline) {
+        for (Post post : posts) {
             Date timestamp = post.getPostId().getPostTimestamp();
             
-            StringBuilder sb = new StringBuilder(post.getContent());
+            StringBuilder sb = new StringBuilder();
+            sb = this.appendPostOwner(showPostOwner, sb, post);
+            sb.append(post.getContent());
             sb.append(" ");
             sb.append(timeAgoFormatter.formatTimeAgo(now, timestamp));
             
             System.out.println(sb.toString());
         }
+    }
+
+    protected StringBuilder appendPostOwner(Boolean showPostOwner, 
+                                            StringBuilder sb, Post post) {
+        
+        if (showPostOwner) {
+            sb.append(post.getPostId().getPostOwner().getUsername());
+            sb.append(" - ");
+        }
+        
+        return sb;
     }
     
 }

@@ -38,47 +38,48 @@ public class BasicDispatcher implements IDispatcher {
                 
         this.checkExtremeCases(request);
         
-        if (0 == request.compareToIgnoreCase("wall")) {//MY WALL CASE
+        String delim = " ";
+        AdvancedStringTokenizer st = new AdvancedStringTokenizer(request, delim);
+        String username = st.nextToken();
 
-            System.out.println("The 'My Wall' function will be implemented soon.");
+        if (!st.hasMoreElements()) {//SHOW TIMELINE OF A USER CASE
+
+            returnView = postController.readTimeline(username, model);
 
         } else {
-            String delim = " ";
-            AdvancedStringTokenizer st = new AdvancedStringTokenizer(request, delim);
-            String firstToken = st.nextToken();
 
-            if (!st.hasMoreElements()) {//SHOW TIMELINE OF A USER CASE
+            String secondToken = st.nextToken();
 
-                returnView = postController.readTimeline(firstToken, model);
+            if (0 == secondToken.compareToIgnoreCase("save") && 
+                !st.hasMoreElements()) {//SAVE CASE
+
+                returnView = userController.save(username, model);
+
+            } else if (0 == secondToken.compareToIgnoreCase("->") && 
+                       st.hasMoreElements()) {//POST CASE
+
+                returnView = postController.save(username, 
+                                                 st.extractRemainingText(delim),
+                                                 model);
+
+            } else if (0 == secondToken.compareToIgnoreCase("follows") && 
+                       1 == st.countTokens()) {//FOLLOWS CASE
+
+                returnView = followingController.save(username, 
+                                                      st.nextToken(),
+                                                      model);
+
+            } else if (0 == secondToken.compareToIgnoreCase("wall") && 
+                       !st.hasMoreElements()) {//WALL CASE
+
+                returnView = postController.readWall(username, model);
 
             } else {
-                
-                String secondToken = st.nextToken();
-                
-                if (0 == firstToken.compareToIgnoreCase("save")) {
-                    
-                    returnView = userController.save(secondToken, model);
-                    
-                } else if (0 == secondToken.compareToIgnoreCase("->") && 
-                           st.hasMoreElements()) {//POST CASE
 
-                    returnView = postController.save(firstToken, 
-                                                     st.extractRemainingText(delim),
-                                                     model);
-                    
-                } else if (0 == secondToken.compareToIgnoreCase("follows") && 
-                           st.hasMoreElements()) {//FOLLOWS CASE
-
-                    returnView = followingController.save(firstToken, 
-                                                          st.nextToken(),
-                                                          model);
-
-                } else {
-
-                    throw new UnknownRequestException();
-                }
+                throw new UnknownRequestException();
             }
         }
+        
         
         viewResolver.resolve(returnView, model);
     }

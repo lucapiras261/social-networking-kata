@@ -59,7 +59,7 @@ public class SocialNetworkingKataApplication implements CommandLineRunner {
         StringBuilder sb = new StringBuilder();
         sb.append("\nWelcome to Social Networking Kata\n\n");
         sb.append("Commands allowed: \n\n");
-        sb.append("- save (create user): save <user name>\n");
+        sb.append("- saving (creating a user): <user name> save\n");
         sb.append("- posting: <user name> -> <message>\n");
         sb.append("- reading: <user name>\n");
         sb.append("- following: <user name> follows <another user>\n");

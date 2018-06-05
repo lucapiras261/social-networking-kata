@@ -35,12 +35,12 @@ public class DomainHelper implements IDomainHelper {
     
     @Override
     public Post createFirstPostBob() {
-        return new Post(new PostId(this.createBob()), "Good game though.");
+        return new Post(new PostId(this.createBob()), "Damn! We lost!");
     }
     
     @Override
     public Post createSecondPostBob() {
-        return new Post(new PostId(this.createBob()), "Damn! We lost!");
+        return new Post(new PostId(this.createBob()), "Good game though.");
     }
 
 

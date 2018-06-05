@@ -12,5 +12,7 @@ public interface IPostService {
     public Post save(Post post);
     
     public List<Post> readTimeline(User user);
+
+    public List<Post> readWall(User user);
      
 }

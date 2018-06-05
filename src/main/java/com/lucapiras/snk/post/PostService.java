@@ -26,7 +26,7 @@ public class PostService implements IPostService {
         if (logger.isDebugEnabled()) {
             logger.debug("All the post of this user in cronological order:");
             logger.debug("-------------------------------");
-            for (Post current : repository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(post.getPostId().getPostOwner())) {
+            for (Post current : repository.findByPostIdPostOwnerOrderByPostIdPostTimestampDesc(post.getPostId().getPostOwner())) {
                 logger.debug(current.toString());
             }
             logger.debug("");
@@ -38,7 +38,12 @@ public class PostService implements IPostService {
     @Override
     public List<Post> readTimeline(User user) {
         
-        return repository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(user);
+        return repository.findByPostIdPostOwnerOrderByPostIdPostTimestampDesc(user);        
+    }
+
+    @Override
+    public List<Post> readWall(User user) {
         
+        return repository.findWallPostsByUsername(user.getUsername());        
     }
 }

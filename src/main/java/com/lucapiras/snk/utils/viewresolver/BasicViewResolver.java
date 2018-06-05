@@ -11,15 +11,15 @@ public class BasicViewResolver implements IViewResolver {
     protected IView emptyView;
     
     @Autowired
-    protected IView timelineView;
+    protected IView postsView;
     
     @Override
     public void resolve(String view, Model model) {
         
-        if (0 == view.compareToIgnoreCase("emptyView")) {
+        if (0 == view.compareToIgnoreCase("empty")) {
             emptyView.show(model);
-        } else if (0 == view.compareToIgnoreCase("timeline")) {
-            timelineView.show(model);
+        } else if (0 == view.compareToIgnoreCase("posts")) {
+            postsView.show(model);
         }
     }
     

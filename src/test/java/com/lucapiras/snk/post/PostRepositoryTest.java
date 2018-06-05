@@ -1,6 +1,8 @@
 package com.lucapiras.snk.post;
 
 import com.lucapiras.snk.SocialNetworkingKataTestApplication;
+import com.lucapiras.snk.following.Following;
+import com.lucapiras.snk.following.FollowingRepository;
 import com.lucapiras.snk.user.User;
 import com.lucapiras.snk.user.UserRepository;
 import com.lucapiras.snk.utils.domain.helper.DomainHelperFactory;
@@ -36,6 +38,9 @@ public class PostRepositoryTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private FollowingRepository followingRepository;
+    
     protected IDomainHelper repoHelper;
 
     public PostRepositoryTest() {
@@ -150,7 +155,7 @@ public class PostRepositoryTest {
     }
     
     /**
-     * Test of findByPostIdPostOwnerOrderByPostIdPostTimestampAsc method, of class PostRepository.
+     * Test of findByPostIdPostOwnerOrderByPostIdPostTimestampDesc method, of class PostRepository.
      */
     @Test
     public void testFindByPostIdPostOwnerOrderByPostIdPostTimestampAsc() throws InterruptedException {
@@ -172,16 +177,111 @@ public class PostRepositoryTest {
         
         postRepository.save(repoHelper.createFirstPostAlice());
         
-        List<Post> results = postRepository.findByPostIdPostOwnerOrderByPostIdPostTimestampAsc(bob);
+        List<Post> results = postRepository.findByPostIdPostOwnerOrderByPostIdPostTimestampDesc(bob);
         int count = 0;
         for (Post result : results) {
             count++;
             
-            //check correct ordering
+            //check if the order is correct
             if (count == 1) {
+                Assert.assertEquals(result.getContent(), secondPostBob.getContent());
+            } else if (count == 2) {
                 Assert.assertEquals(result.getContent(), firstPostBob.getContent());
+            }
+        }
+        
+        Assert.assertEquals(2, count);
+    }
+    
+    /**
+     * Test of findWallPostsByUsername method, of class PostRepository.
+     */
+    @Test
+    public void findWallPostsByUsername() throws InterruptedException {
+        
+        //Users        
+        User charlie = repoHelper.createCharlie();
+        User alice = repoHelper.createAlice();
+        User bob = repoHelper.createBob();
+        
+        userRepository.save(charlie);
+        userRepository.save(alice);
+        userRepository.save(bob);
+        
+        //Posts
+        Post firstPostAlice = repoHelper.createFirstPostAlice();
+        
+        Post firstPostBob = repoHelper.createFirstPostBob();
+        Thread.sleep(10);
+        Post secondPostBob = repoHelper.createSecondPostBob();
+        
+        Post firstPostCharlie = repoHelper.createFirstPostCharlie();
+        
+        postRepository.save(firstPostCharlie);
+        
+        postRepository.save(firstPostBob);
+        postRepository.save(secondPostBob);
+        
+        postRepository.save(firstPostAlice);
+        
+        //Followings
+        Following charlieFollowsAlice = repoHelper.createCharlieFollowsAlice();
+        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        Following aliceFollowsBob = repoHelper.createAliceFollowsBob();
+        
+        followingRepository.save(charlieFollowsAlice);
+        followingRepository.save(charlieFollowsBob);
+        followingRepository.save(aliceFollowsBob);
+        
+        //Charlie
+        List<Post> results = postRepository.findWallPostsByUsername(charlie.getUsername());
+        int count = 0;
+        for (Post result : results) {
+            count++;
+            
+            //check if the order is correct
+            if (count == 1) {
+                Assert.assertEquals(result.getContent(), firstPostCharlie.getContent());
             } else if (count == 2) {
                 Assert.assertEquals(result.getContent(), secondPostBob.getContent());
+            }  else if (count == 3) {
+                Assert.assertEquals(result.getContent(), firstPostBob.getContent());
+            }  else if (count == 4) {
+                Assert.assertEquals(result.getContent(), firstPostAlice.getContent());
+            }
+        }
+        
+        Assert.assertEquals(4, count);
+        
+        //Alice
+        results = postRepository.findWallPostsByUsername(alice.getUsername());
+        count = 0;
+        for (Post result : results) {
+            count++;
+            
+            //check if the order is correct
+            if (count == 1) {
+                Assert.assertEquals(result.getContent(), secondPostBob.getContent());
+            }  else if (count == 2) {
+                Assert.assertEquals(result.getContent(), firstPostBob.getContent());
+            }  else if (count == 3) {
+                Assert.assertEquals(result.getContent(), firstPostAlice.getContent());
+            }
+        }
+        
+        Assert.assertEquals(3, count);
+        
+        //Bob
+        results = postRepository.findWallPostsByUsername(bob.getUsername());
+        count = 0;
+        for (Post result : results) {
+            count++;
+            
+            //check if the order is correct
+            if (count == 1) {
+                Assert.assertEquals(result.getContent(), secondPostBob.getContent());
+            }  else if (count == 2) {
+                Assert.assertEquals(result.getContent(), firstPostBob.getContent());
             }
         }
         

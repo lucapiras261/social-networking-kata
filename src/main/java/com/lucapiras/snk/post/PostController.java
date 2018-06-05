@@ -29,7 +29,7 @@ public class PostController implements IPostController {
         
         service.save(post);
         
-        return "emptyView";
+        return "empty";
     }
 
     @Override
@@ -37,10 +37,24 @@ public class PostController implements IPostController {
         
         User user = new User(username);
         
-        List<Post> timeline = service.readTimeline(user);
+        List<Post> posts = service.readTimeline(user);
         
-        model.addAttribute("timeline", timeline);
+        model.addAttribute("showPostOwner", Boolean.FALSE);
+        model.addAttribute("posts", posts);
         
-        return "timeline";
+        return "posts";
+    }
+    
+    @Override
+    public String readWall(String username, Model model) {
+        
+        User user = new User(username);
+        
+        List<Post> posts = service.readWall(user);
+        
+        model.addAttribute("showPostOwner", Boolean.TRUE);
+        model.addAttribute("posts", posts);
+        
+        return "posts";
     }
 }
