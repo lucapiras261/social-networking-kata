@@ -10,6 +10,7 @@ Maven, Java, Spring Boot, Spring MVC, JPA, Hibernate, JUnit, Mockito, etc.
 
 This is a Spring Boot command line software, main commands are the following ones:
 
+```
 - saving (creating a user): <user name> save
 - posting: <user name> -> <message>
 - reading: <user name>
@@ -17,7 +18,8 @@ This is a Spring Boot command line software, main commands are the following one
 - wall: <user name> wall
 - help (to read again these instructions): welcome
 - exit: exit
-  
+```
+
 Posting, reading, following and wall are described at https://github.com/sandromancuso/social_networking_kata.
 
 In the next, a very brief description of the other additional commands:
@@ -35,8 +37,12 @@ Requirements for compiling it:
 
 In order to compile this software, starting from the root folder, digit:
 
+```
 mvn package
+```
 
 Then, to execute it, digit:
 
+```
 java -jar target/social-networking-kata-1.0.jar
+```
