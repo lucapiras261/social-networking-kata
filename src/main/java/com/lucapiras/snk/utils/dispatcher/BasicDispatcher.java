@@ -3,7 +3,7 @@ package com.lucapiras.snk.utils.dispatcher;
 import com.lucapiras.snk.exception.ExitException;
 import com.lucapiras.snk.exception.UnknownRequestException;
 import com.lucapiras.snk.following.IFollowingController;
-import com.lucapiras.snk.model.BasicModel;
+import com.lucapiras.snk.utils.model.BasicModel;
 import com.lucapiras.snk.post.IPostController;
 import com.lucapiras.snk.user.IUserController;
 import com.lucapiras.snk.utils.string.AdvancedStringTokenizer;
@@ -42,7 +42,11 @@ public class BasicDispatcher implements IDispatcher {
         AdvancedStringTokenizer st = new AdvancedStringTokenizer(request, delim);
         String username = st.nextToken();
 
-        if (!st.hasMoreElements()) {//SHOW TIMELINE OF A USER CASE
+        if (0 == request.compareToIgnoreCase("welcome")) {//WELCOME CASE
+            
+            returnView = "welcome";
+                    
+        } else if (!st.hasMoreElements()) {//SHOW TIMELINE OF A USER CASE
 
             returnView = postController.readTimeline(username, model);
 
@@ -79,7 +83,6 @@ public class BasicDispatcher implements IDispatcher {
                 throw new UnknownRequestException();
             }
         }
-        
         
         viewResolver.resolve(returnView, model);
     }

@@ -113,6 +113,15 @@ public class IDispatcherTest {
     /**
      * Test of dispatch method, of class IDispatcher.
      */
+    @Test(expected = ExitException.class)
+    public void testExit() throws Exception {
+                
+        dispatcher.dispatch("exit");
+    }
+    
+    /**
+     * Test of dispatch method, of class IDispatcher.
+     */
     @Test
     public void testDispatchSuccess() throws Exception {
                 

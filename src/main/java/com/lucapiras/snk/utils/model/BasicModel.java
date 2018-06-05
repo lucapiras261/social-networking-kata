@@ -1,4 +1,4 @@
-package com.lucapiras.snk.model;
+package com.lucapiras.snk.utils.model;
 
 import java.util.Collection;
 import java.util.HashMap;

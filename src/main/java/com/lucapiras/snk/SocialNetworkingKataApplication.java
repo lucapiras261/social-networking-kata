@@ -50,35 +50,23 @@ public class SocialNetworkingKataApplication implements CommandLineRunner {
             dispatcher.dispatch(args[0].toString());
         }*/
         
-        this.printWelcome();
-        
         this.startListening();
     }
 
-    protected void printWelcome() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nWelcome to Social Networking Kata\n\n");
-        sb.append("Commands allowed: \n\n");
-        sb.append("- saving (creating a user): <user name> save\n");
-        sb.append("- posting: <user name> -> <message>\n");
-        sb.append("- reading: <user name>\n");
-        sb.append("- following: <user name> follows <another user>\n");
-        sb.append("- wall: <user name> wall\n");
-        sb.append("- exit\n");
+    protected void startListening() throws Exception {
         
-        System.out.println(sb);
-    }
-
-    protected void startListening() {
+        //welcome and instructions
+        dispatcher.dispatch("welcome");
+            
         Scanner scanner = new Scanner(System.in);
         while(true) {
             try {
                 dispatcher.dispatch(scanner.nextLine());
             } catch(UnknownRequestException ex) {
-                System.out.println("\nUnknown command, please write again.\n");
+                    System.out.println("\nUnknown command, please write again.\n");
             } catch(ExitException ex) {
                 exit(0);
-            }   
+            }
         }
     }
 }

@@ -8,19 +8,24 @@ import org.springframework.ui.Model;
 public class BasicViewResolver implements IViewResolver {
 
     @Autowired
+    protected IView welcomeView;
+
+    @Autowired
     protected IView emptyView;
-    
+
     @Autowired
     protected IView postsView;
-    
+
     @Override
     public void resolve(String view, Model model) {
-        
-        if (0 == view.compareToIgnoreCase("empty")) {
+
+        if (0 == view.compareToIgnoreCase("welcome")) {
+            welcomeView.show(model);
+        } else if (0 == view.compareToIgnoreCase("empty")) {
             emptyView.show(model);
         } else if (0 == view.compareToIgnoreCase("posts")) {
             postsView.show(model);
         }
     }
-    
+
 }
