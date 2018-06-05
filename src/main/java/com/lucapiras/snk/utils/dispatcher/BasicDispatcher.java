@@ -1,7 +1,5 @@
 package com.lucapiras.snk.utils.dispatcher;
 
-import com.lucapiras.snk.exception.ExitException;
-import com.lucapiras.snk.exception.UnknownRequestException;
 import com.lucapiras.snk.following.IFollowingController;
 import com.lucapiras.snk.utils.model.BasicModel;
 import com.lucapiras.snk.post.IPostController;
@@ -32,7 +30,7 @@ public class BasicDispatcher implements IDispatcher {
     protected IViewResolver viewResolver;
     
     @Override
-    public void dispatch(String request) throws ExitException, UnknownRequestException {
+    public void dispatch(String request) throws Exception {
         String returnView = "";
         Model model = new BasicModel();
                 

@@ -1,4 +1,4 @@
-package com.lucapiras.snk.exception;
+package com.lucapiras.snk.utils.dispatcher;
 
 /**
  *

@@ -1,7 +1,7 @@
 package com.lucapiras.snk;
 
 import com.lucapiras.snk.utils.dispatcher.IDispatcher;
-import com.lucapiras.snk.exception.ExitException;
+import com.lucapiras.snk.utils.dispatcher.ExitException;
 import com.lucapiras.snk.utils.exceptionhandler.IExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

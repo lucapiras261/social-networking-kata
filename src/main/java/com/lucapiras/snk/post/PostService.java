@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,8 +21,17 @@ public class PostService implements IPostService {
     protected PostRepository repository;
     
     @Override
-    public Post save(Post post) {
-        Post saved = repository.save(post);
+    public Post save(Post post) throws PostingViolationException {
+        
+        Post saved = null;
+        
+        try {
+            saved = repository.save(post);
+        } catch(DataIntegrityViolationException ex) {
+            logger.debug(ex.toString());
+            
+            throw new PostingViolationException();
+        }
         
         if (logger.isDebugEnabled()) {
             logger.debug("All the post of this user in cronological order:");

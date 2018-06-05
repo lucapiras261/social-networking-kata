@@ -21,7 +21,8 @@ public class PostController implements IPostController {
     protected IPostService service;
     
     @Override
-    public String save(String username, String content, Model model) {
+    public String save(String username, String content, 
+                       Model model) throws PostingViolationException {
         
         User user = new User(username);
         PostId postId = new PostId(user);

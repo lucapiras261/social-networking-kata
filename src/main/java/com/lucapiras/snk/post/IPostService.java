@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface IPostService {
     
-    public Post save(Post post);
+    public Post save(Post post) throws PostingViolationException;
     
     public List<Post> readTimeline(User user);
 

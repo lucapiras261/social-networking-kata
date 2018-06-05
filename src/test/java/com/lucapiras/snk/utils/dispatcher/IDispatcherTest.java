@@ -1,8 +1,6 @@
 package com.lucapiras.snk.utils.dispatcher;
 
 import com.lucapiras.snk.SocialNetworkingKataTestApplication;
-import com.lucapiras.snk.exception.ExitException;
-import com.lucapiras.snk.exception.UnknownRequestException;
 import com.lucapiras.snk.following.Following;
 import com.lucapiras.snk.following.FollowingRepository;
 import com.lucapiras.snk.post.Post;

@@ -21,7 +21,7 @@ public class FollowingController implements IFollowingController {
     
     @Override
     public String save(String usernameFollower, String usernameFollowed, 
-                       Model model) {
+                       Model model) throws FollowingViolationException {
         
         User follower = new User(usernameFollower);
         User followed = new User(usernameFollowed);

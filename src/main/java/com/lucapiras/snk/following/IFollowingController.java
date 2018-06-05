@@ -9,6 +9,6 @@ import org.springframework.ui.Model;
 public interface IFollowingController {
     
     public String save(String usernameFollower, String usernameFollowed, 
-                       Model model);
+                       Model model) throws FollowingViolationException;
     
 }

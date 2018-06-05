@@ -6,6 +6,6 @@ package com.lucapiras.snk.following;
  */
 public interface IFollowingService {
     
-    public Following save(Following following);
+    public Following save(Following following) throws FollowingViolationException;
      
 }
