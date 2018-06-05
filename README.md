@@ -4,7 +4,7 @@ This maven project is a possible (Spring Boot based) solution of the exercise av
 
 # Summary of technologies used
 
-Maven, Java, Spring Boot, Spring MVC, JPA, Hibernate, JUnit, Mockito, SLF4J, Log4j etc.
+Maven, Java, Spring Boot, Spring MVC, JPA, Hibernate, H2 in-mem DB, JUnit, Mockito, SLF4J, Log4j etc.
 
 # How to use it
 
