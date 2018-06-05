@@ -39,12 +39,12 @@ public class IDispatcherTest {
     @Before
     public void setUp() {
         
-        IDomainHelper repoHelper = DomainHelperFactory.getRepositoryHelper();
+        IDomainHelper domainHelper = DomainHelperFactory.getDomainHelper();
         
-        Post post = repoHelper.createFirstPostCharlie();
+        Post post = domainHelper.createFirstPostCharlie();
         Mockito.when(postRepository.save(post)).thenReturn(post);        
         
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         Mockito.when(followingRepository.save(charlieFollowsBob)).thenReturn(charlieFollowsBob);
     }
 

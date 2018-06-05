@@ -10,7 +10,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
@@ -23,15 +25,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FollowingRepositoryTest {
     
     @Autowired
+    private TestEntityManager entityManager;
+    
+    @Autowired
     private UserRepository userRepository;
     
     @Autowired
     private FollowingRepository followingRepository;
     
-    protected IDomainHelper repoHelper;
+    protected IDomainHelper domainHelper;
 
     public FollowingRepositoryTest() {
-        repoHelper = DomainHelperFactory.getRepositoryHelper();
+        domainHelper = DomainHelperFactory.getDomainHelper();
     }
     
     /**
@@ -40,7 +45,7 @@ public class FollowingRepositoryTest {
     @Test
     public void testSaveFollowerAndFollowedExternalReferenceViolation() {
         
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         try {
             followingRepository.save(charlieFollowsBob);
@@ -53,8 +58,8 @@ public class FollowingRepositoryTest {
             
             Assert.assertEquals(0, count);
             
-        } catch(Exception ex) {//it is fine also if it throwned an exception;
-            //sometimes the exception of the save is throwned with the next read
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
+            //sometimes the exception of the save is thrown with the next read
         }
     }
     
@@ -64,8 +69,8 @@ public class FollowingRepositoryTest {
     @Test
     public void testSaveFollowedExternalReferenceViolation() {
         
-        User charlie = repoHelper.createCharlie();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         userRepository.save(charlie);
         try {
@@ -79,8 +84,8 @@ public class FollowingRepositoryTest {
             
             Assert.assertEquals(0, count);
             
-        } catch(Exception ex) {//it is fine also if it throwned an exception;
-            //sometimes the exception of the save is throwned with the next read
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
+            //sometimes the exception of the save is thrown with the next read
         }
     }
     
@@ -90,8 +95,8 @@ public class FollowingRepositoryTest {
     @Test
     public void testSaveFollowerExternalReferenceViolation() {
         
-        User bob = repoHelper.createBob();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        User bob = domainHelper.createBob();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         userRepository.save(bob);
         try {
@@ -105,8 +110,8 @@ public class FollowingRepositoryTest {
             
             Assert.assertEquals(0, count);
             
-        } catch(Exception ex) {//it is fine also if it throwned an exception;
-            //sometimes the exception of the save is throwned with the next read
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
+            //sometimes the exception of the save is thrown with the next read
         }
     }
     
@@ -116,9 +121,9 @@ public class FollowingRepositoryTest {
     @Test
     public void testSave() {
         
-        User charlie = repoHelper.createCharlie();
-        User bob = repoHelper.createBob();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        User bob = domainHelper.createBob();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         userRepository.save(charlie);
         userRepository.save(bob);
@@ -137,9 +142,9 @@ public class FollowingRepositoryTest {
     @Test
     public void testSaveFollowingAlreadyExistViolation() {
         
-        User charlie = repoHelper.createCharlie();
-        User bob = repoHelper.createBob();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        User bob = domainHelper.createBob();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         userRepository.save(charlie);
         userRepository.save(bob);
@@ -157,19 +162,19 @@ public class FollowingRepositoryTest {
             
             Assert.assertEquals(1, count);
             
-        } catch(Exception ex) {//it is fine also if it throwned an exception;
-            //sometimes the exception of the save is throwned with the next read
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
+            //sometimes the exception of the save is thrown with the next read
         }
     }
     
     @Test
     public void testMultipleSaves() {
         
-        User charlie = repoHelper.createCharlie();
-        User alice = repoHelper.createAlice();
-        User bob = repoHelper.createBob();
-        Following charlieFollowsAlice = repoHelper.createCharlieFollowsAlice();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        User alice = domainHelper.createAlice();
+        User bob = domainHelper.createBob();
+        Following charlieFollowsAlice = domainHelper.createCharlieFollowsAlice();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
         
         userRepository.save(charlie);
         userRepository.save(alice);
@@ -187,18 +192,45 @@ public class FollowingRepositoryTest {
         Assert.assertEquals(2, count);
     }
     
+    @Test
+    public void testFollowMyselfViolation() {
+        
+        User charlie = domainHelper.createCharlie();
+        
+        FollowingId followingId = new FollowingId(charlie, charlie);
+        Following followMyself = new Following(followingId);
+        
+        userRepository.save(charlie);
+        
+        try {
+            followingRepository.save(followMyself);
+
+            Iterable<Following> results = followingRepository.findAll();
+            int count = 0;
+            for (Following result : results) {
+                count++;
+            }
+            
+            Assert.assertEquals(0, count);
+            
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
+            //sometimes the exception of the save is thrown with the next read
+        }
+    }
+    
     /**
      * Test of findByFollowingIdFollowed method, of class FollowingRepository.
      */
     @Test
     public void testFindByFollowingIdFollowed() {
         
-        User charlie = repoHelper.createCharlie();
-        User alice = repoHelper.createAlice();
-        User bob = repoHelper.createBob();
-        Following charlieFollowsAlice = repoHelper.createCharlieFollowsAlice();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
-        Following aliceFollowsBob = repoHelper.createAliceFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        User alice = domainHelper.createAlice();
+        User bob = domainHelper.createBob();
+        
+        Following charlieFollowsAlice = domainHelper.createCharlieFollowsAlice();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
+        Following aliceFollowsBob = domainHelper.createAliceFollowsBob();
         
         userRepository.save(charlie);
         userRepository.save(alice);
@@ -239,12 +271,13 @@ public class FollowingRepositoryTest {
     @Test
     public void testFindByFollowingIdFollower() {
         
-        User charlie = repoHelper.createCharlie();
-        User alice = repoHelper.createAlice();
-        User bob = repoHelper.createBob();
-        Following charlieFollowsAlice = repoHelper.createCharlieFollowsAlice();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
-        Following aliceFollowsBob = repoHelper.createAliceFollowsBob();
+        User charlie = domainHelper.createCharlie();
+        User alice = domainHelper.createAlice();
+        User bob = domainHelper.createBob();
+        
+        Following charlieFollowsAlice = domainHelper.createCharlieFollowsAlice();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
+        Following aliceFollowsBob = domainHelper.createAliceFollowsBob();
         
         userRepository.save(charlie);
         userRepository.save(alice);

@@ -3,12 +3,14 @@ package com.lucapiras.snk.following;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import org.hibernate.annotations.Check;
 
 /**
  *
  * @author Luca Piras
  */
 @Entity
+@Check(constraints = "follower_username <> followed_username")
 public class Following implements Serializable {
 
     @EmbeddedId

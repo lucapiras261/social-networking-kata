@@ -72,5 +72,4 @@ public class DomainHelper implements IDomainHelper {
         
         return new Following(followingId);
     }
-    
 }

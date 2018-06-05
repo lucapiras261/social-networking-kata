@@ -41,10 +41,10 @@ public class PostRepositoryTest {
     @Autowired
     private FollowingRepository followingRepository;
     
-    protected IDomainHelper repoHelper;
+    protected IDomainHelper domainHelper;
 
     public PostRepositoryTest() {
-        repoHelper = DomainHelperFactory.getRepositoryHelper();
+        domainHelper = DomainHelperFactory.getDomainHelper();
     }
     
     /**
@@ -53,7 +53,7 @@ public class PostRepositoryTest {
     @Test
     public void testSaveExternalReferenceViolation() {
         
-        Post firstPostBob = repoHelper.createFirstPostBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
         
         try {
             postRepository.save(firstPostBob);
@@ -67,7 +67,7 @@ public class PostRepositoryTest {
             Assert.assertEquals("It saved a post for a user that does not exist!",
                                 1, count);
             
-        } catch(Exception ex) {//it is fine also if it throwned an exception;
+        } catch(Exception ex) {//it is fine also if it thrown an exception;
             //this is because sometimes it doesn't flush the save soon and do not
             //throw the expected exception and, therefore, if it thrown it with
             // the findAll, such exception is related to the external reference
@@ -82,8 +82,8 @@ public class PostRepositoryTest {
     @Test
     public void testSave() {
         
-        User bob = repoHelper.createBob();
-        Post firstPostBob = repoHelper.createFirstPostBob();
+        User bob = domainHelper.createBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
                 
         userRepository.save(bob);
         postRepository.save(firstPostBob);
@@ -107,10 +107,10 @@ public class PostRepositoryTest {
     @Test
     public void testUpdate() {
         
-        User bob = repoHelper.createBob();
+        User bob = domainHelper.createBob();
         
-        Post firstPostBob = repoHelper.createFirstPostBob();
-        Post secondPostBob = repoHelper.createSecondPostBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
+        Post secondPostBob = domainHelper.createSecondPostBob();
                 
         userRepository.save(bob);
         postRepository.save(firstPostBob);
@@ -134,11 +134,11 @@ public class PostRepositoryTest {
     @Test
     public void testMultipleSaves() throws InterruptedException {
         
-        User bob = repoHelper.createBob();
+        User bob = domainHelper.createBob();
         
-        Post firstPostBob = repoHelper.createFirstPostBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
         Thread.sleep(10);
-        Post secondPostBob = repoHelper.createSecondPostBob();
+        Post secondPostBob = domainHelper.createSecondPostBob();
                 
         userRepository.save(bob);
         postRepository.save(firstPostBob);
@@ -160,22 +160,22 @@ public class PostRepositoryTest {
     @Test
     public void testFindByPostIdPostOwnerOrderByPostIdPostTimestampAsc() throws InterruptedException {
         
-        User bob = repoHelper.createBob();
+        User bob = domainHelper.createBob();
         
-        userRepository.save(repoHelper.createAlice());
+        userRepository.save(domainHelper.createAlice());
         userRepository.save(bob);
-        userRepository.save(repoHelper.createCharlie());
+        userRepository.save(domainHelper.createCharlie());
         
-        postRepository.save(repoHelper.createFirstPostCharlie());
+        postRepository.save(domainHelper.createFirstPostCharlie());
         
-        Post firstPostBob = repoHelper.createFirstPostBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
         Thread.sleep(10);
-        Post secondPostBob = repoHelper.createSecondPostBob();
+        Post secondPostBob = domainHelper.createSecondPostBob();
         
         postRepository.save(firstPostBob);
         postRepository.save(secondPostBob);
         
-        postRepository.save(repoHelper.createFirstPostAlice());
+        postRepository.save(domainHelper.createFirstPostAlice());
         
         List<Post> results = postRepository.findByPostIdPostOwnerOrderByPostIdPostTimestampDesc(bob);
         int count = 0;
@@ -200,22 +200,22 @@ public class PostRepositoryTest {
     public void findWallPostsByUsername() throws InterruptedException {
         
         //Users        
-        User charlie = repoHelper.createCharlie();
-        User alice = repoHelper.createAlice();
-        User bob = repoHelper.createBob();
+        User charlie = domainHelper.createCharlie();
+        User alice = domainHelper.createAlice();
+        User bob = domainHelper.createBob();
         
         userRepository.save(charlie);
         userRepository.save(alice);
         userRepository.save(bob);
         
         //Posts
-        Post firstPostAlice = repoHelper.createFirstPostAlice();
+        Post firstPostAlice = domainHelper.createFirstPostAlice();
         
-        Post firstPostBob = repoHelper.createFirstPostBob();
+        Post firstPostBob = domainHelper.createFirstPostBob();
         Thread.sleep(10);
-        Post secondPostBob = repoHelper.createSecondPostBob();
+        Post secondPostBob = domainHelper.createSecondPostBob();
         
-        Post firstPostCharlie = repoHelper.createFirstPostCharlie();
+        Post firstPostCharlie = domainHelper.createFirstPostCharlie();
         
         postRepository.save(firstPostCharlie);
         
@@ -225,9 +225,9 @@ public class PostRepositoryTest {
         postRepository.save(firstPostAlice);
         
         //Followings
-        Following charlieFollowsAlice = repoHelper.createCharlieFollowsAlice();
-        Following charlieFollowsBob = repoHelper.createCharlieFollowsBob();
-        Following aliceFollowsBob = repoHelper.createAliceFollowsBob();
+        Following charlieFollowsAlice = domainHelper.createCharlieFollowsAlice();
+        Following charlieFollowsBob = domainHelper.createCharlieFollowsBob();
+        Following aliceFollowsBob = domainHelper.createAliceFollowsBob();
         
         followingRepository.save(charlieFollowsAlice);
         followingRepository.save(charlieFollowsBob);

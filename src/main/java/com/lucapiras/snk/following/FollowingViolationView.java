@@ -9,6 +9,12 @@ public class FollowingViolationView implements IView {
 
     @Override
     public void show(Model model) {
-        System.out.println("\nOne of the user (or both) does not exist.\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nThis following cannot be saved, possible reasons:\n");
+        sb.append("- one of the user does not exist;\n");
+        sb.append("- both of the users do not exist;\n");
+        sb.append("- a user cannot follow herself.\n");
+        
+        System.out.println(sb.toString());
     }
 }

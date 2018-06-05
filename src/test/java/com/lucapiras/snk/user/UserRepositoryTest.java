@@ -1,6 +1,8 @@
 package com.lucapiras.snk.user;
 
 import com.lucapiras.snk.SocialNetworkingKataTestApplication;
+import com.lucapiras.snk.utils.domain.helper.DomainHelperFactory;
+import com.lucapiras.snk.utils.domain.helper.IDomainHelper;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
@@ -30,15 +32,20 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository repository;
 
+    protected IDomainHelper domainHelper;
+
+    public UserRepositoryTest() {
+        domainHelper = DomainHelperFactory.getDomainHelper();
+    }
+    
     @Test
     public void testSave() {
-        System.out.println("UserRepositoryTest testSave");
         
         List<User> users = new ArrayList();        
         
-        users.add(new User("Alice"));
-        users.add(new User("Bob"));
-        users.add(new User("Charlie"));
+        users.add(domainHelper.createAlice());
+        users.add(domainHelper.createBob());
+        users.add(domainHelper.createCharlie());
         
         for (User user : users) {
             repository.save(user);
@@ -59,11 +66,11 @@ public class UserRepositoryTest {
         
         List<User> users = new ArrayList();        
         
-        User duplicatedUser = new User("Alice");
+        User duplicatedUser = domainHelper.createAlice();
                 
         users.add(duplicatedUser);
-        users.add(new User("Bob"));
-        users.add(new User("Charlie"));
+        users.add(domainHelper.createBob());
+        users.add(domainHelper.createCharlie());
         users.add(duplicatedUser);
         
         for (User user : users) {

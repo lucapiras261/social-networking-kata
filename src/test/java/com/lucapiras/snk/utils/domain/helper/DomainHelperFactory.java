@@ -6,7 +6,7 @@ package com.lucapiras.snk.utils.domain.helper;
  */
 public abstract class DomainHelperFactory {
     
-    public static IDomainHelper getRepositoryHelper() {
+    public static IDomainHelper getDomainHelper() {
         return new DomainHelper();
     }
 }
