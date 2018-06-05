@@ -2,7 +2,7 @@ package com.lucapiras.snk;
 
 import com.lucapiras.snk.utils.dispatcher.IDispatcher;
 import com.lucapiras.snk.exception.ExitException;
-import com.lucapiras.snk.exception.UnknownRequestException;
+import com.lucapiras.snk.utils.exceptionhandler.IExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +29,9 @@ public class SocialNetworkingKataApplication implements CommandLineRunner {
     
     @Autowired
     protected IDispatcher dispatcher;
+    
+    @Autowired
+    protected IExceptionHandler exceptionHandler;
 
     public static void main(String[] args) throws Exception {        
         SpringApplication.run(SocialNetworkingKataApplication.class, args);
@@ -62,10 +65,10 @@ public class SocialNetworkingKataApplication implements CommandLineRunner {
         while(true) {
             try {
                 dispatcher.dispatch(scanner.nextLine());
-            } catch(UnknownRequestException ex) {
-                    System.out.println("\nUnknown command, please write again.\n");
             } catch(ExitException ex) {
                 exit(0);
+            } catch(Exception ex) {
+                exceptionHandler.handle(ex);
             }
         }
     }
